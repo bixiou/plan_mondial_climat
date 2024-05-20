@@ -44,7 +44,7 @@ compute_poverty_gap <- function(df = p, threshold = 2.15, unit = "$", growth = "
   return(pg)
 }
 
-# Percentile above which we expropriate all y to fill the poverty gap TODO? rename: anti-poverty cap
+# Percentile above which we expropriate all y to fill the poverty gap 
 compute_antipoverty_maximum <- function(df = p, threshold = 2.15, return = "y", growth = "optimistic") { 
   y <- name_var_growth(growth)
   thresholds <- if (is.numeric(threshold)) rep(threshold, nrow(df)) else p[[threshold]]
