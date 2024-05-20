@@ -373,14 +373,8 @@ create_p <- function(ppp_year = 2017, pop_iso = pop_iso3, rescale = FALSE) {
   #Missing in PIP : Afghanistan, Brunei, Cuba, Erythrée, Guinée équatoriale, Cambodge, Kuwait, Lybie, Liechtenstein, Nouvelle Calédonie, Nouvelle Zélande, Oman, Puerto Rico, Qatar, Sahara Occidental, Arabie Saoudite, Singapore, Somalie, Taiwan
   countries_names <- setNames(p$country, p$country_code) 
   
-
-  # y makes the assumption of constant growth while Y assumes 6% growth after 2022
-  # p <- df # To run compute_distribution_2030, this line is needed to avoid bug (Indeed, urban/rural have been removed otherwise).
-  # p <- compute_inequality(var = "bolch", df = p, return = "df")
   p <- compute_distribution_2030(growth = "now", df = p, name_var = "y_2022")
   p <- compute_distribution_2030(growth = "average", df = p, growth_rate = 1.035, name_var = "Y3")
-  # p <- compute_distribution_2030(growth = "strong", df = p, growth_rate = 1.045, name_var = "Y4")
-  # df <- p
   
   p <- p[(!p$country_code %in% c("CHN", "IDN", "IND")) | p$reporting_level == "national",]
   
@@ -410,20 +404,6 @@ rm(pop)
 pop_rural_urban <- read.csv2("../data/poverty/pop_rural_urban.csv") # Last updated 07/05/2023 https://databank.worldbank.org/source/population-estimates-and-projections/preview/on#
 LIC <- c("AFG", "BFA", "BDI", "TCD", "COD", "ERI", "ETH", "GMB", "GIN", "GNB", "PRK", "LBR", "MDG", "MWI", "MLI", "MOZ", "NER", "RWA", "SOM", "SRE", "SDN", "SSD", "SYR", "TGO", "UGA", "YEM") # 2023 official classification. LIC: 650M people "ZMB"
 SSA <- c("SDN", "AGO", "GIN", "GMB", "GNB", "GNQ", "BDI", "BEN", "BFA", "SEN", "BWA", "CAF", "SLE", "SOM", "SSD", "CIV", "CMR", "COD", "COG", "COM", "LBR", "LSO", "RWA", "SWZ", "TCD", "TGO", "MLI", "MDG", "DJI", "ERI", "ESH", "ETH", "MWI", "MUS", "MRT", "MOZ", "TZA", "UGA", "ZMB", "ZWE", "NGA", "NER", "NAM", "GHA", "GAB", "ZAF")
-# setdiff(p$country_code[p$country_code %in% LIC & !is.na(p$welfare_avg_1)], SSA) # SYR, YEM
-# setdiff(SSA, LIC) # many
 
-# start <- Sys.time()
 p17 <- create_p()
 w <- create_world_distribution()
-# ssa <- create_world_distribution(region = SSA)
-# lic <- create_world_distribution(region = LIC)
-# w11 <- create_world_distribution(df = p11) # 9 min
-
-# selected_countries <- order(p$country)[order(p$country) %in% which(p$pop_2022 > 1e7 & no.na(p$mean_welfare, 0, num_as_char = FALSE) < 6)]
-# p17$country_short <- p17$country
-# p17$country_short[p17$country == "Democratic Republic of the Congo"] <- "D.R. Congo"
-
-# print(Sys.time() - start) # 1 min
-# beep()
-# save.image(".RData")
