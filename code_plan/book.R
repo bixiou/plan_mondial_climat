@@ -177,11 +177,13 @@ for (s in scenarios_names) {
   scenarios_features[s, "pop_covered"] <- (sum(df$pop_2023[df$code %in% eval(str2expression(s))], na.rm = T) + ("Dem USA" %in% eval(str2expression(s)) & !"USA" %in% eval(str2expression(s))) * 117*1e6)/sum(df$pop_2023, na.rm = T)
   scenarios_features[s, "basic_income_2040"] <- basic_income_adj[[s]]["2040"]*euro_per_dollar/12
   scenarios_features[s, "EU_loss_adj_over_gdp_2040"] <- -EU_gain_adj_over_gdp[[s]]["2040"]
+  net_emissions_2020_2100_s <- sum(df[, paste0(if (s == "all_countries") "" else paste0("S", s, "_"), "emissions_", 2020:2100)]) # scenarios_features[s, "net_emissions_2020_2100"] TODO: check that 2.7°C = 2.76Tt over 2020-2100 and 1.8°C = 1.05Tt
+  scenarios_features[s, "temperature_2100"] <- barycenter(sum(df[, paste0(if (s == "all_countries") "" else paste0("S", s, "_"), "emissions_", 2020:2100)]), sum(df[, paste0("emissions_", 2020:2100)]), sum(bau[, paste0("emissions_", 2020:2100)]), 1.8, 2.7)
 }
 (scenarios_table <- scenarios_features)
 
-for (col in names(scenarios_features)[2:length(names(scenarios_features))]) scenarios_table[, col] <- paste0(sprintf(paste0("%.", if (grepl("EU_", col)) 1 else 0, "f"), 
-                            if (grepl("basic_income", col)) scenarios_features[, col] else 100*scenarios_features[, col]), if (grepl("basic_income", col)) "" else "\\%")
+for (col in names(scenarios_features)[2:length(names(scenarios_features))]) scenarios_table[, col] <- paste0(sprintf(paste0("%.", if (grepl("EU_|temperature", col)) 1 else 0, "f"), 
+                                                                                                                     if (grepl("basic_income|temperature", col)) scenarios_features[, col] else 100*scenarios_features[, col]), if (grepl("basic_income|temperature", col)) "" else "\\%")
 # cat(paste(kbl(scenarios_table, "latex", caption = "Main features of the different scenarios.", position = "h", escape = F, booktabs = T, align = "c", 
 #               linesep = rep("", nrow(scenarios_table)-1), digits = c(0, 0, 0, 1), label = "scenarios_table.tex", row.names = FALSE,  
 #               col.names = c("Scenario", "\\makecell{Emissions\\\\covered}", "\\makecell{Population\\\\covered}", "\\makecell{Basic income\\\\in 2040 (\\$/month)}", 
@@ -189,12 +191,13 @@ for (col in names(scenarios_features)[2:length(names(scenarios_features))]) scen
 scenarios_table_fr <- scenarios_table
 scenarios_table_fr$scenario <- c("Tous les pays", "Tous sauf OPEP+", "Optimiste", "Central", "Prudent", "UE + Afrique")
 cat(sub("\\end{tabular}", "\\end{tabular}}", sub("\\centering", "\\makebox[\\textwidth][c]{", 
-    paste(kbl(scenarios_table_fr, "latex", caption = "Principales caractéristiques des différents scénarios de club climatique.", 
-              position = "h", escape = F, booktabs = T, align = "c", linesep = rep("", nrow(scenarios_table)-1), digits = c(0, 0, 0, 1),
-              label = "scenarios_table_fr", row.names = FALSE,  format.args = list(decimal = ","),
-        col.names = c("\\makecell{Scenario\\\\de club}", "\\makecell{Émissions\\\\mondiales\\\\couvertes}", "\\makecell{Population\\\\mondiale\\\\couverte}", 
-                      "\\makecell{Revenu de base\\\\en 2040\\\\(\\euro{}/mois)}", "\\makecell{Contribution de l'UE\\\\en 2040\\\\(fraction de son PIB)}")), 
-        collapse="\n"), fixed = T), fixed = T), file = "../tables/scenarios_table_fr.tex") 
+   paste(kbl(scenarios_table_fr, "latex", caption = "Principales caractéristiques des différents scénarios de club climatique.", 
+             position = "h", escape = F, booktabs = T, align = "c", linesep = rep("", nrow(scenarios_table)-1), digits = c(0, 0, 0, 1),
+             label = "scenarios_table_fr", row.names = FALSE,  format.args = list(decimal = ","),
+             col.names = c("\\makecell{Scenario\\\\de club}", "\\makecell{Émissions\\\\mondiales\\\\couvertes}", "\\makecell{Population\\\\mondiale\\\\couverte}", 
+                           "\\makecell{Revenu\\\\de base\\\\en 2040\\\\(\\euro{}/mois)}", "\\makecell{Coût pour l'UE\\\\en 2040\\\\(en fraction\\\\de son PIB)}", #"\\makecell{Contribution de l'UE\\\\en 2040\\\\(fraction de son PIB)}", 
+                           "\\makecell{Hausse de la\\\\température\\\\en 2100\\\\(en \\textdegree{}C)}")), 
+         collapse="\n"), fixed = T), fixed = T), file = "../tables/scenarios_table_fr.tex") 
 
 
 # Note 14 
