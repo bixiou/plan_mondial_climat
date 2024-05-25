@@ -88,7 +88,9 @@ compute_poverty_gap(df = w, threshold = 7.5, growth = "average")/(world_GDP_PPP*
 # Table 1 (in OECD, 2023) shows DAC total aid flows are $204G = 0.36 of their GNI => 0.06% of their GNI is for aid to LDCs. *DAC: Development Assistance Committee
 0.36*32/204 # 0.056% of DAC countries' GNI to LDCs
 
-# Note 8 TODO 2 à 5% de leur PIB
+# Note 8 2 à 5% de leur PIB
+share_HIC_in_world_GDP <- 64.39/139.36 # https://data.worldbank.org/indicator/NY.GDP.MKTP.PP.KD?end=2022&locations=XD-1W&start=2022&view=bar (consulted on 21/05/2024)
+compute_poverty_gap(df = w, threshold = 7.5, growth = "average")/(world_GDP_PPP*1.035^8)/share_HIC_in_world_GDP # 4.5%
 
 # Note 9 Source: https://ourworldindata.org/contributed-most-global-co2
 
@@ -177,9 +179,11 @@ for (s in scenarios_names) {
   scenarios_features[s, "pop_covered"] <- (sum(df$pop_2023[df$code %in% eval(str2expression(s))], na.rm = T) + ("Dem USA" %in% eval(str2expression(s)) & !"USA" %in% eval(str2expression(s))) * 117*1e6)/sum(df$pop_2023, na.rm = T)
   scenarios_features[s, "basic_income_2040"] <- basic_income_adj[[s]]["2040"]*euro_per_dollar/12
   scenarios_features[s, "EU_loss_adj_over_gdp_2040"] <- -EU_gain_adj_over_gdp[[s]]["2040"]
-  net_emissions_2020_2100_s <- sum(df[, paste0(if (s == "all_countries") "" else paste0("S", s, "_"), "emissions_", 2020:2100)]) # scenarios_features[s, "net_emissions_2020_2100"] TODO: check that 2.7°C = 2.76Tt over 2020-2100 and 1.8°C = 1.05Tt
+  net_emissions_2020_2100_s <- sum(df[, paste0(if (s == "all_countries") "" else paste0("S", s, "_"), "emissions_", 2020:2100)]) # scenarios_features[s, "net_emissions_2020_2100"] 
+  # 2.7°C = 2.76Tt over 2020-2100 and 1.8°C = 1.05Tt. Another way to see it: we are at +1.31°C in 2020, RCP2.6 adds 1Tt i.e. 0.5°C, RCP4.5 adds 2.76Tt i.e. 1.38°C. Cf. IPCC AR6 WGI Ch 5.5.1 (.45°C/TtCO2) or Ch 1: 
+  # "The SSP2-4.5 scenario deviates mildly from a ‘no-additional-climate-policy’ reference scenario, resulting in a best-estimate warming around 2.7°C by the end of the 21st century relative to 1850–1900" IPCC AR6 WGI Ch 1
   scenarios_features[s, "temperature_2100"] <- barycenter(sum(df[, paste0(if (s == "all_countries") "" else paste0("S", s, "_"), "emissions_", 2020:2100)]), sum(df[, paste0("emissions_", 2020:2100)]), sum(bau[, paste0("emissions_", 2020:2100)]), 1.8, 2.7)
-}
+} 
 (scenarios_table <- scenarios_features)
 
 for (col in names(scenarios_features)[2:length(names(scenarios_features))]) scenarios_table[, col] <- paste0(sprintf(paste0("%.", if (grepl("EU_|temperature", col)) 1 else 0, "f"), 
@@ -194,7 +198,7 @@ cat(sub("\\end{tabular}", "\\end{tabular}}", sub("\\centering", "\\makebox[\\tex
    paste(kbl(scenarios_table_fr, "latex", caption = "Principales caractéristiques des différents scénarios d'union climatique.", 
              position = "h", escape = F, booktabs = T, align = "c", linesep = rep("", nrow(scenarios_table)-1), digits = c(0, 0, 0, 1),
              label = "scenarios_table_fr", row.names = FALSE,  format.args = list(decimal = ","),
-             col.names = c("\\makecell{Scenario\\\\d'union}", "\\makecell{Émissions\\\\mondiales\\\\couvertes}", "\\makecell{Population\\\\mondiale\\\\couverte}", 
+             col.names = c("\\makecell{Scénario\\\\d'union}", "\\makecell{Émissions\\\\mondiales\\\\couvertes}", "\\makecell{Population\\\\mondiale\\\\couverte}", 
                            "\\makecell{Revenu\\\\de base\\\\en 2040\\\\(\\euro{}/mois)}", "\\makecell{Coût pour l'UE\\\\en 2040\\\\(en fraction\\\\de son PIB)}", #"\\makecell{Contribution de l'UE\\\\en 2040\\\\(fraction de son PIB)}", 
                            "\\makecell{Hausse de la\\\\température\\\\en 2100\\\\(en \\textdegree{}C)}")), 
          collapse="\n"), fixed = T), fixed = T), file = "../tables/scenarios_table_fr.tex") 
