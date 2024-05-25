@@ -120,7 +120,7 @@ Burundi_GDP_pc_nominal*(df$pop_2022/df$adult_2022)[df$country == "Burundi"]*euro
 ##### Ch. 5 Les grands éléments du Plan #####
 ## 5.1
 # Figure 5.1 ../figures/policies/emissions_par_region_sm.pdf
-par(mar = c(2.1, 3.1, 0.1, 0.1)) 
+par(mar = c(2.1, 3.1, 0.1, 0.1), mgp = c(2.2, 1, 0)) 
 plot(2025:2080, df[df$country == "China", paste0("emissions_pa_", 2025:2080)], type = 'l', col = 'red', lwd = 2, lty = 2, xlab = "", ylab = "Émissions de CO2 par adulte (tCO2/an)", ylim = c(0, 17.5))
 lines(2025:2080, df[df$code == "USA", paste0("emissions_pa_", 2025:2080)], type = 'l', col = 'blue', lwd = 2, lty = 3)
 lines(2025:2080, colSums(df[df$code %in% EU27_countries, paste0("emissions_", 2025:2080)])/colSums(df[df$code %in% EU27_countries, paste0("adult_", 2025:2080)]), type = 'l', col = 'darkgreen', lwd = 2, lty = 4, xlab = "", ylab = "")
@@ -297,23 +297,23 @@ plot_world_map("share_below_global_mean", df = percentiles[!is.na(percentiles$co
 
 # Figure 6.3 ../figures/maps/gain_adj_2030_fr.pdf
 plot_world_map("gain_euro_2030", df = df, breaks = c(-Inf, -150, -100, -50, -10, -1e-10, 0, 10, 20, 30, 40, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
-               labels =  sub("≤", "<", agg_thresholds(c(0), c(-Inf, -150, -100, -50, -10, 0, 0, 10, 20, 30, 40, Inf), sep = " to ", return = "levels")), filename = paste0("gain_adj_2030_fr"),
-               legend = paste0("Gain net\npar adulte au\nPlan mondial pour le climat\nen 2030 (en € par mois)"), #fill_na = T,
-               save = F) 
+               labels =  sub("≤", "<", agg_thresholds(c(0), c(-Inf, -150, -100, -50, -10, 0, 0, 10, 20, 30, 40, Inf), sep = " à ", return = "levels")), filename = paste0("gain_adj_2030_fr"),
+               legend = paste0("Gain net\npar adulte suite au\nPlan mondial pour le climat\nen 2030 (en € par mois)"), #fill_na = T,
+               save = T) 
 
 # Figure 6.4 ../figures/maps/npv_over_gdp_gcs_adj_fr.pdf
 plot_world_map("npv_over_gdp_gcs_adj", df = df, breaks = c(-Inf, -.02, -.01, -.005, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = .08, trim = T, # svg, pdf
-               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = " to ", return = "levels")), filename = "npv_over_gdp_gcs_adj_fr",
-               legend = "Gains nets au\nPlan mondial pour le climat\nagrégés sur le siècle\n(en % du PIB)", #fill_na = T, \n(with 4% discount rate)
-               save = F)
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = " à ", return = "levels")), filename = "npv_over_gdp_gcs_adj_fr",
+               legend = "Gains nets suite au\nPlan mondial pour le climat\nagrégés sur le siècle\n(en % du PIB)", #fill_na = T, \n(with 4% discount rate)
+               save = T)
 
-# Figure 6.5 ../figures/maps/Soptimistic_npv_over_gdp_gcs_adj.pdf
-# Figure 6.6 ../figures/maps/Scentral_npv_over_gdp_gcs_adj.pdf
+# Figure 6.5 ../figures/maps/Soptimistic_npv_over_gdp_gcs_adj_fr.pdf
+# Figure 6.6 ../figures/maps/Scentral_npv_over_gdp_gcs_adj_fr.pdf
 for (i in 3:4) {
   plot_world_map(paste0("S", scenarios_names[i], "_npv_over_gdp_gcs_adj"), df = df, breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = .075, trim = T, # svg, pdf
-                 labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = " to ", return = "levels")), filename = paste0("S", scenarios_names[i], "_npv_over_gdp_gcs_adj_fr"),
-                 legend = paste0("Gains nets au\nPlan mondial pour le climat\nagrégés sur le siècle\n(en % du PIB)\nScénario: ", capitalize(gsub("_", " ", scenarios_table_fr$scenario[i]))), #fill_na = T, \n(with 3% discount rate)
-                 save = F, parties = scenarios_parties[[scenarios_names[i]]])
+                 labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = " à ", return = "levels")), filename = paste0("S", scenarios_names[i], "_npv_over_gdp_gcs_adj_fr"),
+                 legend = paste0("Gains nets suite au\nPlan mondial pour le climat\nagrégés sur le siècle\n(en % du PIB)\nScénario: ", capitalize(gsub("_", " ", scenarios_table_fr$scenario[i]))), #fill_na = T, \n(with 3% discount rate)
+                 save = T, parties = scenarios_parties[[scenarios_names[i]]])
 }
 
 
