@@ -159,9 +159,10 @@ plot(2020:2100, transfer_over_gdp, type = 'l')
 # International transfers from the GCP: .6% of world GDP in 2030
 mean(transfer_over_gdp[as.character(2025:2060)]) # .58% 
 
-# Average French loses less than 10€/month, average Indian wins 25€/month in 2030.
-df$gain_euro_2030[df$country == "France"] # -9.40€/month
+# Average European loses less than 25€/month, average Indian wins 25€/month in 2030.
+wtd.mean(df$gain_euro_2030, df$adult_2030 * df$code %in% EU27_countries) # -25€/month
 df$gain_euro_2030[df$country == "India"] # +24.9/month
+
 
 ## 5.3 
 # Emission share by region:
@@ -201,6 +202,11 @@ cat(sub("\\end{tabular}", "\\end{tabular}}", sub("\\centering", "\\makebox[\\tex
 NGN_per_euro <- 0.0007026 # Consulted on 28/04/2024 https://www.xe.com/currencyconverter/convert/?Amount=1&From=NGN&To=EUR
 269130*NGN_per_euro # 189€ Hardware Cost + Shipping: NGN 269,130 Cost for January 2023. Consulted on 28/04/2024 https://starlinkinsider.com/starlink-price/
 24175*NGN_per_euro # 17€ Monthly Price (Roam Regional): NGN 24,175 Cost for January 2023. Consulted on 28/04/2024 https://starlinkinsider.com/starlink-price/
+
+# Note 2
+# States with Democratic margin (e.g. 57%-41%) >15pp at the 2024 presidential election: 13 states + DC
+# California, Illinois, New York, New Jersey, Washington, Massachusetts, Oregon, Connecticut, Delaware, Hawaii, Rhose Island, DC, Vermont, Maryland
+# sources: https://en.wikipedia.org/wiki/2020_United_States_presidential_election#Results_by_state
 
 # The government of Haiti estimates at €17 billion the illegitimate debt that France imposed upon it at the independence. 
 # Source: http://preferences-pol.fr/Documents/Haïti.pdf, cf. aussi https://www.cadtm.org/spip.php?page=imprimer&id_article=339
@@ -275,8 +281,8 @@ plot(1:100, 100*pmin(6, wid$variation_income), col = "blue", lwd = 2, type = 'l'
 plot(40:100, 100*wid$variation_income[40:100], col = "blue", lwd = 2, type = 'l', ylim = 100*c(-0.024, 0.048), xlab = "Percentile of living standard", ylab = "Variation of living standard (in %)") + grid() + abline(h = 0)
 
 percentiles$share_below_global_mean[no.na(percentiles$code) == "IND"] # 94% of winners in India
-percentiles$share_below_global_mean[no.na(percentiles$code) == "FRA"] # 23% of winners in France
-df$gain_euro_2030[df$code == "FRA"] # -9.4€/month for the average French 
+sum(sapply(EU27_countries, function(c) return(df$pop_2030[df$code == c] * percentiles$share_below_global_mean[no.na(percentiles$code) == c])))/sum(df$pop_2030[df$code %in% EU27_countries]) # 27% of winners in EU27
+wtd.mean(df$gain_euro_2030, df$adult_2030 * df$code %in% EU27_countries) # -25€/month for the average European
 
 # Note 2
 # States with Democratic margin (e.g. 57%-41%) >15pp at the 2024 presidential election: 13 states + DC

@@ -209,6 +209,11 @@ NGN_per_euro <- 0.0007026 # Consulted on 28/04/2024 https://www.xe.com/currencyc
 269130*NGN_per_euro # 189€ Hardware Cost + Shipping: NGN 269,130 Cost for January 2023. Consulted on 28/04/2024 https://starlinkinsider.com/starlink-price/
 24175*NGN_per_euro # 17€ Monthly Price (Roam Regional): NGN 24,175 Cost for January 2023. Consulted on 28/04/2024 https://starlinkinsider.com/starlink-price/
 
+# Note 2
+# States with Democratic margin (e.g. 57%-41%) >15pp at the 2024 presidential election: 13 states + DC
+# California, Illinois, New York, New Jersey, Washington, Massachusetts, Oregon, Connecticut, Delaware, Hawaii, Rhose Island, DC, Vermont, Maryland
+# sources: https://en.wikipedia.org/wiki/2020_United_States_presidential_election#Results_by_state
+
 # The government of Haiti estimates at €17 billion the illegitimate debt that France imposed upon it at the independence. 
 # Source: http://preferences-pol.fr/Documents/Haïti.pdf, cf. aussi https://www.cadtm.org/spip.php?page=imprimer&id_article=339
 17e9/(12*4*df$adult_2025[df$country == "Haiti"]) # 44€/month: cost of a basic income to all Haitian adults for 4 years to pay back the €17G debt. 
@@ -315,6 +320,8 @@ for (i in 3:4) {
                  legend = paste0("Gains nets suite au\nPlan mondial pour le climat\nagrégés sur le siècle\n(en % du PIB)\nScénario: ", capitalize(gsub("_", " ", scenarios_table_fr$scenario[i]))), #fill_na = T, \n(with 3% discount rate)
                  save = T, parties = scenarios_parties[[scenarios_names[i]]])
 }
+
+# TODO: Interlude L'effet concret du Plan sur la vie des gens La part d'électricité d'origine renouvelable est ainsi passée de 20~\% à 80~\% en seulement sept ans. Résultat, les émissions indiennes ont baissé de 30~\% sur la période
 
 
 ##### Ch. 7 Un pas vers un monde soutenable #####
