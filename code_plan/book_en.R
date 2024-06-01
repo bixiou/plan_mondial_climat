@@ -350,9 +350,9 @@ Ukraine_GDP_2021/Ukraine_GDP_1990-1 # -21%
 # Note 8
 # With depreciation of 15% and no tax evasion, a 2% tax above $5 million would collect 1% of the world income. Source: https://wid.world/world-wealth-tax-simulator/
 
-df$gain_adj_2030[df$country == "France"]*euro_per_dollar # 113€ per French adult to be raised
-df$gain_adj_2030[df$country == "France"]*euro_per_dollar/12 # Average loss per French adult: 9.35€/month
-# 3.5% tax on income > 16342€/month (top 1%): raises 120€ per French adult (without behavioral effect). Source: wid.world/data (consulted on 29/04/2024), cf. own computations on ../data/poverty/WID_income.xlsx
+wtd.mean(df$gain_adj_2030[df$code %in% EU27_countries], df$adult_2030[df$code %in% EU27_countries])*euro_per_dollar # 297€ per European adult to be raised
+wtd.mean(df$gain_adj_2030[df$code %in% EU27_countries], df$adult_2030[df$code %in% EU27_countries])*euro_per_dollar/12 # Average loss per European adult: 25€/month
+# 8.2% tax on income > 119588/12=9966€/month (top 3%): raises 297€/year per European adult (without behavioral effect). Source: wid.world/data (consulted on 01/06/2024), cf. own computations on ../data/poverty/WID_income.xlsx
 
 (df$gain_adj_2030*df$adult_2022)[df$country == "United States"]/1e9 # 474G$ to be raised to offset 
 df$gain_adj_2030[df$country == "United States"]/12 # -141$/month: loss to average (compensated) American from GCP
