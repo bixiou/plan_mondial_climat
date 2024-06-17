@@ -298,27 +298,27 @@ df$gain_euro_2030[df$code == "FRA"] # -9.4€/month for the average French
 # Figure 6.2 ../figures/maps/share_below_global_mean.pdf 1297x626, then cropped using https://pdfresizer.com/crop
 plot_world_map("share_below_global_mean", df = percentiles[!is.na(percentiles$country_map),],  breaks = c(-Inf, 1, 15, 30, 50, 70, 90, 99, Inf), format = c('png', 'pdf'), legend_x = .09, trim = T, # svg, pdf
                labels = sub("≤", "<", agg_thresholds(c(1), c(-Inf, 1, 15, 30, 50, 70, 90, 99, Inf), sep = "% à ", end = "%", return = "levels")), legend = "Part de gagnants\nsuite au\nPlan mondial pour le climat", 
-               save = F) 
+               save = F, negative_stripes = T) 
 
 # Figure 6.3 ../figures/maps/gain_adj_2030_fr.pdf
 plot_world_map("gain_euro_2030", df = df, breaks = c(-Inf, -150, -100, -50, -10, -1e-10, 0, 10, 20, 30, 40, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
-               labels =  sub("≤", "<", agg_thresholds(c(0), c(-Inf, -150, -100, -50, -10, 0, 0, 10, 20, 30, 40, Inf), sep = " à ", return = "levels")), filename = paste0("gain_adj_2030_fr"),
+               labels =  sub("≤", "<", agg_thresholds(c(0), c(-Inf, -150, -100, -50, -10, 0, 0, 10, 20, 30, 40, Inf), sep = " à ", return = "levels")), filename = paste0("gain_adj_2030_fr_stripes"),
                legend = paste0("Gain net\npar adulte suite au\nPlan mondial pour le climat\nen 2030 (en € par mois)"), #fill_na = T,
-               save = T) 
+               save = F, negative_stripes = T) 
 
 # Figure 6.4 ../figures/maps/npv_over_gdp_gcs_adj_fr.pdf
 plot_world_map("npv_over_gdp_gcs_adj", df = df, breaks = c(-Inf, -.02, -.01, -.005, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = .08, trim = T, # svg, pdf
-               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = " à ", return = "levels")), filename = "npv_over_gdp_gcs_adj_fr",
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = " à ", return = "levels")), filename = "npv_over_gdp_gcs_adj_fr_stripes",
                legend = "Gains nets suite au\nPlan mondial pour le climat\nagrégés sur le siècle\n(en % du PIB)", #fill_na = T, \n(with 4% discount rate)
-               save = T)
+               save = F, negative_stripes = T)
 
 # Figure 6.5 ../figures/maps/Soptimistic_npv_over_gdp_gcs_adj_fr.pdf
 # Figure 6.6 ../figures/maps/Scentral_npv_over_gdp_gcs_adj_fr.pdf
 for (i in 3:4) {
   plot_world_map(paste0("S", scenarios_names[i], "_npv_over_gdp_gcs_adj"), df = df, breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = .075, trim = T, # svg, pdf
-                 labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = " à ", return = "levels")), filename = paste0("S", scenarios_names[i], "_npv_over_gdp_gcs_adj_fr"),
+                 labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = " à ", return = "levels")), filename = paste0("S", scenarios_names[i], "_npv_over_gdp_gcs_adj_fr_stripes"),
                  legend = paste0("Gains nets suite au\nPlan mondial pour le climat\nagrégés sur le siècle\n(en % du PIB)\nScénario: ", capitalize(gsub("_", " ", scenarios_table_fr$scenario[i]))), #fill_na = T, \n(with 3% discount rate)
-                 save = T, parties = scenarios_parties[[scenarios_names[i]]])
+                 save = F, negative_stripes = T, parties = scenarios_parties[[scenarios_names[i]]])
 }
 
 # TODO: Interlude L'effet concret du Plan sur la vie des gens La part d'électricité d'origine renouvelable est ainsi passée de 20~\% à 80~\% en seulement sept ans. Résultat, les émissions indiennes ont baissé de 30~\% sur la période

@@ -290,29 +290,29 @@ wtd.mean(df$gain_euro_2030, df$adult_2030 * df$code %in% EU27_countries) # -25�
 # sources: https://en.wikipedia.org/wiki/2020_United_States_presidential_election#Results_by_state
 
 # Figure 6.2 ../figures/maps/share_below_global_mean_en.pdf 1297x626, then cropped using https://pdfresizer.com/crop
-plot_world_map("share_below_global_mean", df = percentiles[!is.na(percentiles$country_map),],  breaks = c(-Inf, 1, 15, 30, 50, 70, 90, 99, Inf), format = c('png', 'pdf'), legend_x = .09, trim = T, filename = "share_below_global_mean_en",
+plot_world_map("share_below_global_mean", df = percentiles[!is.na(percentiles$country_map),],  breaks = c(-Inf, 1, 15, 30, 50, 70, 90, 99, Inf), format = c('png', 'pdf'), legend_x = .09, trim = T, filename = "share_below_global_mean_en_stripes",
                labels = sub("≤", "<", agg_thresholds(c(1), c(-Inf, 1, 15, 30, 50, 70, 90, 99, Inf), sep = "% to ", end = "%", return = "levels")), legend = "Share of winners\nfollowing the\nGlobal Climate Plan", 
-               save = F) 
+               save = F, negative_stripes = T) 
 
 # Figure 6.3 ../figures/maps/gain_adj_2030.pdf
 plot_world_map("gain_euro_2030", df = df, breaks = c(-Inf, -150, -100, -50, -10, -1e-10, 0, 10, 20, 30, 40, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
-               labels =  sub("≤", "<", agg_thresholds(c(0), c(-Inf, -150, -100, -50, -10, 0, 0, 10, 20, 30, 40, Inf), sep = " to ", return = "levels")), filename = paste0("gain_adj_2030"),
+               labels =  sub("≤", "<", agg_thresholds(c(0), c(-Inf, -150, -100, -50, -10, 0, 0, 10, 20, 30, 40, Inf), sep = " to ", return = "levels")), filename = paste0("gain_adj_2030_stripes"),
                legend = paste0("Net gain per adult\nfollowing the\nGlobal Climate Plan\nin 2030 (in € per month)"), #fill_na = T,
-               save = F) 
+               save = F, negative_stripes = T) 
 
 # Figure 6.4 ../figures/maps/npv_over_gdp_gcs_adj.pdf
 plot_world_map("npv_over_gdp_gcs_adj", df = df, breaks = c(-Inf, -.02, -.01, -.005, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = .08, trim = T, # svg, pdf
-               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = " to ", return = "levels")), filename = "npv_over_gdp_gcs_adj",
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = " to ", return = "levels")), filename = "npv_over_gdp_gcs_adj_stripes",
                legend = "Net gain per adult\nfollowing the\nGlobal Climate Plan\naggregated over the century\n(in % of GDP)", #fill_na = T, \n(with 4% discount rate)
-               save = F)
+               save = F, negative_stripes = T)
 
 # Figure 6.5 ../figures/maps/Soptimistic_npv_over_gdp_gcs_adj.pdf
 # Figure 6.6 ../figures/maps/Scentral_npv_over_gdp_gcs_adj.pdf
 for (i in 3:4) {
   plot_world_map(paste0("S", scenarios_names[i], "_npv_over_gdp_gcs_adj"), df = df, breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = .075, trim = T, # svg, pdf
-                 labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = " to ", return = "levels")), filename = paste0("S", scenarios_names[i], "_npv_over_gdp_gcs_adj"),
+                 labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = " to ", return = "levels")), filename = paste0("S", scenarios_names[i], "_npv_over_gdp_gcs_adj_stripes"),
                  legend = paste0("Net gain per adult\nfollowing the\nGlobal Climate Plan\naggregated over the century\n(in % of GDP)\nScenario: ", capitalize(gsub("_", " ", scenarios_table$scenario[i]))), #fill_na = T, \n(with 3% discount rate)
-                 save = F, parties = scenarios_parties[[scenarios_names[i]]])
+                 save = F, negative_stripes = T, parties = scenarios_parties[[scenarios_names[i]]])
 }
 
 
